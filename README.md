@@ -11,11 +11,11 @@ This project is composed of 5 independent microservices. Click below to view the
 
 | Service | Responsibility | Repository Link |
 | :--- | :--- | :--- |
-| **API Gateway** | Central entry point, Routing, Rate Limiting, Auth Proxy | [Link to API Gateway](https://github.com/YOUR_GITHUB_USERNAME/ApiGateway) |
-| **Auth Service** | JWT issuance, Validation, User Management | [Link to Auth Service](https://github.com/YOUR_GITHUB_USERNAME/Auth_Service) |
-| **Flight Service** | Flight Catalog, City/Airport Management, Search Filters | [Link to Flight Service](https://github.com/YOUR_GITHUB_USERNAME/flightsandSearch) |
-| **Booking Service** | Booking Orchestration, Transaction Management, Message Publishing | [Link to Booking Service](https://github.com/YOUR_GITHUB_USERNAME/bookingService) |
-| **Reminder Service** | Cron Jobs, Email Notifications, RabbitMQ Consumer | [Link to Reminder Service](https://github.com/YOUR_GITHUB_USERNAME/reminderService) |
+| **API Gateway** | Central entry point, Routing, Rate Limiting, Auth Proxy | [Link to API Gateway](https://github.com/rkt0209/ApiGateway) |
+| **Auth Service** | JWT issuance, Validation, User Management | [Link to Auth Service](https://github.com/rkt0209/Auth_Service) |
+| **Flight Service** | Flight Catalog, City/Airport Management, Search Filters | [Link to Flight Service](https://github.com/rkt0209/flightsandSearch) |
+| **Booking Service** | Booking Orchestration, Transaction Management, Message Publishing | [Link to Booking Service](https://github.com/rkt0209/bookingService) |
+| **Reminder Service** | Cron Jobs, Email Notifications, RabbitMQ Consumer | [Link to Reminder Service](https://github.com/rkt0209/reminderService) |
 
 ---
 
