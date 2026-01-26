@@ -71,7 +71,7 @@ This project is built using a robust, production-ready technology stack designed
 * **Networking:** Application Load Balancer (ALB) for traffic distribution
 * **Gateway:** Custom API Gateway for centralized routing
 
-### **DevOps & Tooling**
+### **Logging &Tooling**
 * **Logging:** Morgan (HTTP request logger)
 * **Error Handling:** Centralized Error Handling classes
 * **Security:** JSON Web Tokens (JWT), bcrypt
