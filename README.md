@@ -46,12 +46,51 @@ The system handles the complete flow of a flight reservation—from searching fo
 
 The system follows a **Hub-and-Spoke** architecture where the **API Gateway** acts as the single entry point. Services communicate synchronously via **REST (HTTP)** for data retrieval and asynchronously via **RabbitMQ** for heavy background tasks (email notifications).
 
-### **Tech Stack**
-* **Backend:** Node.js, Express
-* **Database:** MySQL (Sequelize ORM) with Migrations
-* **Messaging:** RabbitMQ (Message Queues & Exchanges)
-* **Auth:** JSON Web Tokens (JWT), bcrypt
-* **Cloud (AWS):** EC2, RDS, Application Load Balancer (ALB), Auto Scaling Groups (ASG)
+## 🛠️ Tech Stack & Architecture
+
+This project is built using a robust, production-ready technology stack designed for scalability and maintainability.
+
+### **Core Backend**
+* **Runtime:**  Node.js
+* **Framework:** Express.js
+* **Architecture:** Microservices (4 Independent Services + API Gateway)
+
+### **Database & Storage**
+* **Database:**  MySQL (Relational DB)
+* **ORM:** Sequelize (for schema modeling, migrations, and seeders)
+* **Cloud Storage:** AWS RDS (Managed Relational Database Service)
+
+### **Messaging & Asynchronous Tasks**
+* **Message Broker:**  RabbitMQ (utilizing `amqplib`)
+* **Task Scheduling:** Node-Cron (for automated email reminders)
+* **Email Service:** Nodemailer
+
+### **Cloud Infrastructure (AWS)**
+* **Compute:** AWS EC2 (Elastic Compute Cloud)
+* **Scaling:** AWS Auto Scaling Groups (Dynamic scaling based on load)
+* **Networking:** Application Load Balancer (ALB) for traffic distribution
+* **Gateway:** Custom API Gateway for centralized routing
+
+### **DevOps & Tooling**
+* **Logging:** Morgan (HTTP request logger)
+* **Error Handling:** Centralized Error Handling classes
+* **Security:** JSON Web Tokens (JWT), bcrypt
+
+---
+
+### 📂 Project Structure & Patterns
+The codebase follows the **Repository-Service-Controller** design pattern to ensure separation of concerns and clean, testable code.
+
+* **`/config`** - Environment-specific configurations and DB connections.
+* **`/controllers`** - Handles incoming HTTP requests and responses.
+* **`/services`** - Contains core business logic.
+* **`/repository`** - Direct database interactions (Data Access Layer).
+* **`/models`** - Sequelize schema definitions.
+* **`/migrations`** - Database schema version control.
+* **`/seeders`** - Scripts to populate initial data.
+* **`/middlewares`** - Request validation, Auth checks, and error handling.
+* **`/routes`** - API route definitions.
+* **`/utils`** - Helper functions and error classes.
 
 ### **Key Workflows**
 1.  **User Search:** `Client` → `Gateway` → `Flight Service` (MySQL)
