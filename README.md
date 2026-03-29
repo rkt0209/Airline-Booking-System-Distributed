@@ -1,224 +1,354 @@
-# ✈️ Airline Booking Microservices Platform
+# ✈️ Airline Booking Platform — Full Stack (Microservices + Android)
 
-**A distributed, event-driven backend system for flight management, booking orchestration, and automated notifications.**
+**A distributed, event-driven backend system for flight management, booking orchestration, and automated notifications — paired with a premium Jetpack Compose Android client.**
 
-Built with **Node.js**, **Express**, **MySQL**, **RabbitMQ**, and deployed on **AWS** using a custom API Gateway and Auto Scaling Groups.
+Built with **Node.js**, **Express**, **MySQL**, **RabbitMQ**, and **Kotlin (Jetpack Compose)**.
+Deployed on **AWS** using a custom API Gateway and Auto Scaling Groups.
+
+---
+
+## 📱 Android App
+
+### Download & Try (Static UI Preview APK)
+> This APK demonstrates the full UI/UX with static mock data. No backend required.
+
+**[⬇️ Download APK (Google Drive)](https://drive.google.com/file/d/1mizDEc4hqTUytJFRnaJZeA0Q22mcGWJ1/view?usp=drivesdk)**
+
+### Android Source Code
+**[📦 Android App Repository — GitHub](https://github.com/rkt0209/airlineManagmentAPP)**
+
+### Install the APK on Your Android Device
+1. Open the Google Drive link above on your Android phone and tap **Download**
+2. Once downloaded, tap the `.apk` file in your notifications or file manager
+3. If prompted, go to `Settings → Security → Install unknown apps` and enable it for your browser/file manager
+4. Tap **Install** and open the app
+5. > **Note:** This APK uses static mock data. To use live booking with the real backend, build from source (see [Run the Android App](#-run-the-android-app-from-source) below)
 
 ---
 
 ## 🔗 Microservice Repositories
-This project is composed of 5 independent microservices. Click below to view the source code for each:
 
-| Service | Responsibility | Repository Link |
+| Service | Responsibility | Repository |
 | :--- | :--- | :--- |
-| **API Gateway** | Central entry point, Routing, Rate Limiting, Auth Proxy | [Link to API Gateway](https://github.com/rkt0209/ApiGateway) |
-| **Auth Service** | JWT issuance, Validation, User Management | [Link to Auth Service](https://github.com/rkt0209/Auth_Service) |
-| **Flight Service** | Flight Catalog, City/Airport Management, Search Filters | [Link to Flight Service](https://github.com/rkt0209/flightsandSearch) |
-| **Booking Service** | Booking Orchestration, Transaction Management, Message Publishing | [Link to Booking Service](https://github.com/rkt0209/bookingService) |
-| **Reminder Service** | Cron Jobs, Email Notifications, RabbitMQ Consumer | [Link to Reminder Service](https://github.com/rkt0209/reminderService) |
+| **API Gateway** | Central entry point, Routing, Rate Limiting, Auth Proxy | [Link](https://github.com/rkt0209/ApiGateway) |
+| **Auth Service** | JWT issuance, Validation, User Management | [Link](https://github.com/rkt0209/Auth_Service) |
+| **Flight Service** | Flight Catalog, City/Airport Management, Search Filters | [Link](https://github.com/rkt0209/flightsandSearch) |
+| **Booking Service** | Booking Orchestration, Transaction Management, Message Publishing | [Link](https://github.com/rkt0209/bookingService) |
+| **Reminder Service** | Cron Jobs, Email Notifications, RabbitMQ Consumer | [Link](https://github.com/rkt0209/reminderService) |
 
 ---
+
 ## 📖 Project Overview
 
 This is a comprehensive **Airline Booking System** built using a **Microservices Architecture**. It simulates a real-world production environment where different functionalities (Authentication, Booking, Flight Search, Notifications) are decoupled into independent services.
 
-The system handles the complete flow of a flight reservation—from searching for flights and managing seat inventory to processing secure bookings and sending asynchronous email notifications.
+The system handles the complete flow of a flight reservation — from searching for flights and managing seat inventory, to processing secure bookings and sending asynchronous email notifications — all accessible through a polished Android mobile client.
 
 ---
 
 ## ✨ Key Features
 
-### 👤 **For the User (Functional Features)**
-* **Smart Flight Search:** Users can filter flights based on Source, Destination, and Price range.
-* **Real-Time Seat Availability:** The system prevents overbooking by atomically updating seat inventory during the transaction.
-* **Secure Authentication:** User accounts are protected using **JWT (JSON Web Tokens)** and secure password hashing.
-* **Instant Notifications:** Users receive immediate booking confirmations via email.
-* **Automated Reminders:** A background cron job automatically schedules and sends flight reminder emails 24 hours before departure.
+### 📱 **Android App Features**
+- **JWT Authentication** — Login & signup with role selection (Passenger / Admin); session persisted in SharedPreferences
+- **Live Flight Search** — Real airport dropdowns from API; filtered by departure airport, arrival airport, and travel date (timezone-aware)
+- **Premium Flight Cards** — Airline branding, flight duration, seat availability indicator, price per seat
+- **Booking Flow** — Seat selector, real-time booking creation, success/error dialogs; triggers confirmation email via RabbitMQ
+- **My Bookings** — Boarding-pass style cards split into **Upcoming** and **Previous** tabs, sorted by departure time
+- **User Profile** — Displays real JWT-decoded email and role
+- **Admin Panel** — Full flight and airport CRUD management
+- **Custom UI** — Wave-shaped curved bottom nav with raised FAB; all times shown in device local timezone
 
-### ⚙️ **For the Developer (Technical Features)**
-* **Centralized API Gateway:** A single entry point that manages request routing, rate limiting, and request logging.
-* **Event-Driven Architecture:** Uses **RabbitMQ** to decouple the booking process from email notifications, ensuring low latency.
-* **Resilient Scheduling:** A custom Reminder Service handles scheduling tasks reliably, even if the mail server is temporarily down.
-* **Scalable Infrastructure:** Designed to be deployed on **AWS** with Auto Scaling Groups and Load Balancers to handle traffic spikes.
+### 👤 **Backend Features (User-Facing)**
+- **Smart Flight Search** — Filter by source, destination, and price range
+- **Real-Time Seat Availability** — Atomic seat inventory update prevents overbooking
+- **Secure Authentication** — JWT + bcrypt password hashing
+- **Instant Booking Confirmation** — Email sent immediately after booking
+- **Automated Reminders** — Cron job sends flight reminder emails 24 hours before departure
 
----
-## 🏗️ Architecture & Technologies
-
-The system follows a **Hub-and-Spoke** architecture where the **API Gateway** acts as the single entry point. Services communicate synchronously via **REST (HTTP)** for data retrieval and asynchronously via **RabbitMQ** for heavy background tasks (email notifications).
-
-## 🛠️ Tech Stack & Architecture
-
-This project is built using a robust, production-ready technology stack designed for scalability and maintainability.
-
-### **Core Backend**
-* **Runtime:**  Node.js
-* **Framework:** Express.js
-* **Architecture:** Microservices (4 Independent Services + API Gateway)
-
-### **Database & Storage**
-* **Database:**  MySQL (Relational DB)
-* **ORM:** Sequelize (for schema modeling, migrations, and seeders)
-* **Cloud Storage:** AWS RDS (Managed Relational Database Service)
-
-### **Messaging & Asynchronous Tasks**
-* **Message Broker:**  RabbitMQ (utilizing `amqplib`)
-* **Task Scheduling:** Node-Cron (for automated email reminders)
-* **Email Service:** Nodemailer
-
-### **Cloud Infrastructure (AWS)**
-* **Compute:** AWS EC2 (Elastic Compute Cloud)
-* **Scaling:** AWS Auto Scaling Groups (Dynamic scaling based on load)
-* **Networking:** Application Load Balancer (ALB) for traffic distribution
-* **Gateway:** Custom API Gateway for centralized routing
-
-### **Logging &Tooling**
-* **Logging:** Morgan (HTTP request logger)
-* **Error Handling:** Centralized Error Handling classes
-* **Security:** JSON Web Tokens (JWT), bcrypt
+### ⚙️ **Backend Features (Technical)**
+- **Centralized API Gateway** — Single entry point for routing, rate limiting, and logging
+- **Event-Driven Architecture** — RabbitMQ decouples booking from notifications for low latency
+- **Resilient Scheduling** — Reminder Service handles scheduling even if mail server is temporarily down
+- **Scalable Infrastructure** — AWS Auto Scaling Groups + Load Balancers for traffic spikes
 
 ---
 
-### 📂 Project Structure & Patterns
-The codebase follows the **Repository-Service-Controller** design pattern to ensure separation of concerns and clean, testable code.
+## 🏗️ System Architecture
 
-* **`/config`** - Environment-specific configurations and DB connections.
-* **`/controllers`** - Handles incoming HTTP requests and responses.
-* **`/services`** - Contains core business logic.
-* **`/repository`** - Direct database interactions (Data Access Layer).
-* **`/models`** - Sequelize schema definitions.
-* **`/migrations`** - Database schema version control.
-* **`/seeders`** - Scripts to populate initial data.
-* **`/middlewares`** - Request validation, Auth checks, and error handling.
-* **`/routes`** - API route definitions.
-* **`/utils`** - Helper functions and error classes.
+```
+Android App (Jetpack Compose)
+        │
+        ▼
+  API Gateway :3005
+  ┌─────────────────────────────────┐
+  │  Auth Service       :7000       │
+  │  Flight Service     :3000       │
+  │  Booking Service    :5000  ──── RabbitMQ ──── Reminder Service :3004
+  └─────────────────────────────────┘                    │
+        │                                           Nodemailer (Email)
+     MySQL / AWS RDS
+```
 
-### **Key Workflows**
-1.  **User Search:** `Client` → `Gateway` → `Flight Service` (MySQL)
-2.  **Booking:** `Client` → `Gateway` → `Booking Service` → `Flight Service` (Check Seats) → `MySQL` (Save)
-3.  **Notification:** `Booking Service` → `RabbitMQ` → `Reminder Service` → `Nodemailer` (Email)
+**Key Workflows:**
+1. **Search:** `App` → `Gateway` → `Flight Service` (MySQL)
+2. **Booking:** `App` → `Gateway` → `Booking Service` → `Flight Service` (seat check) → `MySQL` (save)
+3. **Notification:** `Booking Service` → `RabbitMQ` → `Reminder Service` → `Nodemailer`
 
 ---
 
-## 🚀 How to Run Locally
+## 🛠️ Full Tech Stack
 
-### **Prerequisites**
-* Node.js (v18+)
-* MySQL Server (Running locally or via Docker)
-* RabbitMQ Server (Running locally or via Docker)
+### Android App
+| Layer | Technology |
+| :--- | :--- |
+| Language | Kotlin |
+| UI | Jetpack Compose (Material 3) |
+| Navigation | Compose Navigation (`androidx.navigation`) |
+| Dependency Injection | Dagger Hilt (`@HiltViewModel`, `@Singleton`) |
+| Networking | Retrofit 2 + OkHttp (with `AuthInterceptor` for JWT) |
+| Serialization | Gson (`@SerializedName`) |
+| State Management | Kotlin `StateFlow` / `MutableStateFlow` |
+| Auth | JWT decoded from SharedPreferences |
+| Date/Time | `java.time` (API 26+): `Instant`, `ZoneId`, `LocalDate` |
+| Min SDK | API 26 (Android 8.0) |
 
-### **Step 1: Clone Repositories**
-Clone all 5 repositories into a single folder.
+### Backend
+| Layer | Technology |
+| :--- | :--- |
+| Runtime | Node.js |
+| Framework | Express.js |
+| Database | MySQL + Sequelize ORM |
+| Cloud DB | AWS RDS |
+| Message Broker | RabbitMQ (`amqplib`) |
+| Task Scheduling | node-cron |
+| Email | Nodemailer |
+| Auth | JWT + bcrypt |
+| Logging | Morgan |
+| Cloud Infra | AWS EC2, Auto Scaling Groups, ALB |
 
-### **Step 2: Database Setup**
-Create the databases in your local MySQL instance:
+---
+
+## 🚀 How to Run the Full Stack Locally
+
+### Prerequisites
+- Node.js (v18+)
+- MySQL Server running locally
+- RabbitMQ running locally (`amqp://localhost`)
+- Android Studio Hedgehog or newer (for the app)
+- JDK 17+, Android SDK API 26+
+
+---
+
+### Step 1 — Clone All Repositories
+
+Clone the backend monorepo and the Android app:
+```bash
+# Backend (this repo — contains all 5 services as subfolders)
+git clone https://github.com/rkt0209/AirLineBookingProject
+cd AirLineBookingProject
+
+# Android App
+git clone https://github.com/rkt0209/airlineManagmentAPP
+```
+
+---
+
+### Step 2 — Database Setup
+
+Create the three databases in your local MySQL:
 ```sql
 CREATE DATABASE auth_db;
 CREATE DATABASE booking_db;
 CREATE DATABASE flights_search_db;
 ```
-### Step 3: Configure Database (config.json)
-For each of the services that use a database (Auth, Booking, Flight, Reminder), you must create a configuration file to tell Sequelize how to connect to your local DB.
 
-- Navigate to src/config inside the service folder.
-- Create a file named config.json.
-- Paste the following code (update password with your local MySQL password):
-```
+---
+
+### Step 3 — Configure Each Service
+
+#### 3a. Database Config (`src/config/config.json`)
+Create `config.json` inside each service's `src/config/` folder:
+
+```json
 {
   "development": {
     "username": "root",
-    "password": "YOUR_LOCAL_MYSQL_PASSWORD",
-    "database": "auth_db",
+    "password": "YOUR_MYSQL_PASSWORD",
+    "database": "SERVICE_DB_NAME",
     "host": "127.0.0.1",
     "dialect": "mysql"
   }
 }
 ```
-* Important: You must change the "database" key for each service:
-* Auth Service: "database": "auth_db"
-* Booking & Reminder Service: "database": "booking_db"
-* Flight Service: "database": "flights_search_db"
-### Step 4: Configure Environment Variables (.env)
-Create a .env file in the root of each service folder with the following details:
-# 1. API Gateway
-```
+
+| Service | `"database"` value |
+| :--- | :--- |
+| Auth Service | `"auth_db"` |
+| Booking Service | `"booking_db"` |
+| Reminder Service | `"booking_db"` |
+| Flight Service | `"flights_search_db"` |
+
+#### 3b. Environment Variables (`.env`)
+
+Create a `.env` file in the root of each service folder:
+
+**API Gateway**
+```env
 PORT=3005
 AUTH_SERVICE=http://localhost:7000
 BOOKING_SERVICE=http://localhost:5000
 FLIGHT_SERVICE=http://localhost:3000
 ```
 
-# 2. Auth Service
-```
+**Auth Service**
+```env
 PORT=7000
 SALT=YourRandomSaltString
 JWT_KEY=YourSecretKey
 DB_SYNC=true
 ```
-# 3. Flight Search Service
-```
+
+**Flight Search Service**
+```env
 PORT=3000
 DB_SYNC=true
 ```
-# 4. Booking Service
-```
+
+**Booking Service**
+```env
 PORT=5000
-DB_SYNC=true
+DB_SYNC=false
 FLIGHT_SERVICE_PATH=http://localhost:3000/flightservice
 USER_SERVICE_PATH=http://localhost:7000/authservice
 MESSAGE_BROKER_URL=amqp://localhost
 EXCHANGE_NAME=AIRLINE_BOOKING
 REMINDER_BINDING_KEY=REMINDER_SERVICE
 ```
-# 5. Reminder Service
-```
+
+**Reminder Service**
+```env
 PORT=3004
-# Use your actual email credentials to test sending emails
 EMAIL_ID=your-email@gmail.com
-EMAIL_PASS=your-app-password
+EMAIL_PASS=your-gmail-app-password
 MESSAGE_BROKER_URL=amqp://localhost
 EXCHANGE_NAME=AIRLINE_BOOKING
 REMINDER_BINDING_KEY=REMINDER_SERVICE
-### Step 4: Install & Run
-Open a separate terminal for each service and run:
 ```
-# Inside each service folder:
-Open 5 separate terminals (one for each service) and run the following commands in order:
+
+> For `EMAIL_PASS`: use a **Gmail App Password** (not your account password). Generate one at `Google Account → Security → 2-Step Verification → App Passwords`.
+
+---
+
+### Step 4 — Install, Migrate & Start Each Service
+
+Open **5 separate terminals** and run in this order:
+
+```bash
+# 1. Auth Service
+cd AUTH_SERVICE && npm install && npx sequelize db:migrate && npm start
+
+# 2. Flight Service
+cd FlightAndSearchService && npm install && npx sequelize db:migrate && npm start
+
+# 3. Reminder Service
+cd ReminderService && npm install && npx sequelize db:migrate && npm start
+
+# 4. Booking Service
+cd BookingService && npm install && npx sequelize db:migrate && npm start
+
+# 5. API Gateway (last — depends on all other services)
+cd API_GATEWAY && npm install && npm start
 ```
-npm install
-npx sequelize db:migrate
-npm start
-```
-### Order of Startup:
-- RabbitMQ & MySQL
-- Auth Service
-- Flight Service
-- Reminder Service
-- Booking Service
-- API Gateway
-Access the system at http://localhost:3005 (Gateway Port).
+
+> **Startup order matters:** RabbitMQ and MySQL must be running before any service. API Gateway must start last.
+
+The backend is now live at: `http://localhost:3005`
+
+---
+
+## 📱 Run the Android App from Source
+
+### Step 1 — Open in Android Studio
+- Launch Android Studio
+- `File → Open` → select the `airlineManagmentAPP/` folder
+- Wait for Gradle sync to complete
+
+### Step 2 — Configure the Backend URL
+
+The app defaults to `http://10.0.2.2:3005` — the Android emulator's loopback address for your host machine.
+
+| Scenario | What to do |
+| :--- | :--- |
+| Running on **emulator** | No change needed — `10.0.2.2` works out of the box |
+| Running on a **physical device** | Open `app/src/main/java/com/example/airline/core/network/NetworkModule.kt` and replace `10.0.2.2` with your machine's local IP (e.g., `192.168.1.5`) |
+
+> Your phone and computer must be on the **same Wi-Fi network**.
+
+### Step 3 — Build & Run
+- Select an emulator or connected device (API 26+)
+- Click **Run ▶** or press `Shift + F10`
+- The app will launch and connect to your running backend
+
+---
+
+## 📲 Install the Live-Connected APK (Build from Source)
+
+If you want to share the app with someone who already has the backend running:
+
+1. In Android Studio: `Build → Build Bundle(s) / APK(s) → Build APK(s)`
+2. APK is generated at:
+   ```
+   airlineManagmentAPP/app/build/outputs/apk/debug/app-debug.apk
+   ```
+3. Transfer the APK to the target Android device (USB, Google Drive, etc.)
+4. On the device: `Settings → Security → Install unknown apps` → enable for your file manager
+5. Tap the APK file and install
+6. Ensure the device is on the same network as the backend, or point to a deployed backend URL
+
+---
 
 ## ☁️ How to Deploy on AWS
 
-This project supports a fully automated deployment using EC2 Launch Templates.
-
 ### Deployment Overview
-* **Hardware:** t2.micro / t2.medium EC2 instances.
-* **OS:** Ubuntu 24.04 LTS.
-* **Database:** AWS RDS (MySQL).
-* **Scaling:** AWS Auto Scaling Group (ASG) behind an Application Load Balancer (ALB).
+- **Hardware:** t2.micro / t2.medium EC2 instances
+- **OS:** Ubuntu 24.04 LTS
+- **Database:** AWS RDS (MySQL)
+- **Scaling:** AWS Auto Scaling Group (ASG) behind an Application Load Balancer (ALB)
 
 ### Step-by-Step Guide
-* **RDS Setup:** Create a MySQL instance on AWS RDS.
-* **Launch Template:** Create an EC2 Launch Template using the User Data Script provided in this repo (`aws/launch-script.sh`).
-    * > **Note:** Update the `DB_HOST` variable in the script with your RDS Endpoint.
-* **Auto Scaling:** Create an Auto Scaling Group using the template.
-* **Load Balancer:** Attach an Application Load Balancer (Internet Facing) listening on **Port 80**.
-* **Target Group:** Point the Load Balancer to **Port 3005** (The API Gateway).
+1. **RDS Setup:** Create a MySQL instance on AWS RDS
+2. **Launch Template:** Create an EC2 Launch Template using the User Data Script in `aws/launch-script.sh`
+   > Update the `DB_HOST` variable in the script with your RDS Endpoint
+3. **Auto Scaling:** Create an Auto Scaling Group using the template
+4. **Load Balancer:** Attach an Application Load Balancer (Internet Facing) listening on **Port 80**
+5. **Target Group:** Point the Load Balancer to **Port 3005** (the API Gateway)
+6. **Android App (Cloud):** Update `NetworkModule.kt` with the Load Balancer DNS and rebuild the APK
 
-### Accessing the Deployed App
-Once deployed, the API is accessible via the Load Balancer DNS:
-
-```http
-GET http://<LOAD_BALANCER_DNS>/home
+### Accessing the Deployed API
+```
+GET  http://<LOAD_BALANCER_DNS>/home
 POST http://<LOAD_BALANCER_DNS>/flightservice/api/v1/flights
 ```
+
+---
+
+## 📂 Backend Project Structure
+
+```
+/config       — Environment configs and DB connections
+/controllers  — HTTP request/response handlers
+/services     — Core business logic
+/repository   — Data Access Layer (DB queries)
+/models       — Sequelize schema definitions
+/migrations   — Database schema version control
+/seeders      — Initial data population scripts
+/middlewares  — Auth checks, validation, error handling
+/routes       — API route definitions
+/utils        — Helper functions and error classes
+```
+
+---
+
+## 📄 License
+
+This project is for educational and portfolio purposes.
