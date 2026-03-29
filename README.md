@@ -141,13 +141,26 @@ Android App (Jetpack Compose)
 
 ### Step 1 — Clone All Repositories
 
-Clone the backend monorepo and the Android app:
+Create a root folder and clone each service into it:
 ```bash
-# Backend (this repo — contains all 5 services as subfolders)
-git clone https://github.com/rkt0209/AirLineBookingProject
-cd AirLineBookingProject
+mkdir AirlineBookingProject && cd AirlineBookingProject
 
-# Android App
+# 1. API Gateway
+git clone https://github.com/rkt0209/ApiGateway
+
+# 2. Auth Service
+git clone https://github.com/rkt0209/Auth_Service
+
+# 3. Flight & Search Service
+git clone https://github.com/rkt0209/flightsandSearch
+
+# 4. Booking Service
+git clone https://github.com/rkt0209/bookingService
+
+# 5. Reminder Service
+git clone https://github.com/rkt0209/reminderService
+
+# 6. Android App
 git clone https://github.com/rkt0209/airlineManagmentAPP
 ```
 
@@ -245,19 +258,19 @@ Open **5 separate terminals** and run in this order:
 
 ```bash
 # 1. Auth Service
-cd AUTH_SERVICE && npm install && npx sequelize db:migrate && npm start
+cd Auth_Service && npm install && npx sequelize db:migrate && npm start
 
 # 2. Flight Service
-cd FlightAndSearchService && npm install && npx sequelize db:migrate && npm start
+cd flightsandSearch && npm install && npx sequelize db:migrate && npm start
 
 # 3. Reminder Service
-cd ReminderService && npm install && npx sequelize db:migrate && npm start
+cd reminderService && npm install && npx sequelize db:migrate && npm start
 
 # 4. Booking Service
-cd BookingService && npm install && npx sequelize db:migrate && npm start
+cd bookingService && npm install && npx sequelize db:migrate && npm start
 
 # 5. API Gateway (last — depends on all other services)
-cd API_GATEWAY && npm install && npm start
+cd ApiGateway && npm install && npm start
 ```
 
 > **Startup order matters:** RabbitMQ and MySQL must be running before any service. API Gateway must start last.
